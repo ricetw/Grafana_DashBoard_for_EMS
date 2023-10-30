@@ -24,11 +24,11 @@ class BaseTableForEM():
     id = Column(Integer, nullable=False, primary_key=True)
     timestamp = Column(TIMESTAMP, nullable=False,
                         default=datetime.datetime.utcnow())
-    I1 = Column(String, nullable=False)
-    I2 = Column(String, nullable=False)
-    I3 = Column(String, nullable=False)
-    EffectivePower = Column(String, nullable=False)
-    ReactivePower = Column(String, nullable=False)
+    I1 = Column(String(25), nullable=False)
+    I2 = Column(String(25), nullable=False)
+    I3 = Column(String(25), nullable=False)
+    EffectivePower = Column(String(25), nullable=False)
+    ReactivePower = Column(String(25), nullable=False)
 
 
 class EnergyConsumption(BaseTable, Base):
@@ -107,29 +107,29 @@ class EM12(BaseTableForEM, Base):
 
 class EM14(BaseTable, Base):
     __tablename__ = 'EM14'
-    flow_rate = Column(String, nullable=False)
-    flow = Column(String, nullable=False)
+    flow_rate = Column(String(25), nullable=False)
+    flow = Column(String(25), nullable=False)
 
 class EM15(BaseTable, Base):
     __tablename__ = 'EM15'
-    EM1500 = Column(String, nullable=False)
-    EM1502 = Column(String, nullable=False)
-    EM1504 = Column(String, nullable=False)
-    EM1510 = Column(String, nullable=False)
-    EM1511 = Column(String, nullable=False)
-    EM1512 = Column(String, nullable=False)
-    EM1513 = Column(String, nullable=False)
-    EM1514 = Column(String, nullable=False)
-    EM1515 = Column(String, nullable=False)
-    EM1516 = Column(String, nullable=False)
-    EM1517 = Column(String, nullable=False)
-    EM1518 = Column(String, nullable=False)
-    EM1519 = Column(String, nullable=False)
-    EM1520 = Column(String, nullable=False)
-    EM1521 = Column(String, nullable=False)
-    EM1522 = Column(String, nullable=False)
-    EM1523 = Column(String, nullable=False)
-    EM1524 = Column(String, nullable=False)
+    EM1500 = Column(String(25), nullable=False)
+    EM1502 = Column(String(25), nullable=False)
+    EM1504 = Column(String(25), nullable=False)
+    EM1510 = Column(String(25), nullable=False)
+    EM1511 = Column(String(25), nullable=False)
+    EM1512 = Column(String(25), nullable=False)
+    EM1513 = Column(String(25), nullable=False)
+    EM1514 = Column(String(25), nullable=False)
+    EM1515 = Column(String(25), nullable=False)
+    EM1516 = Column(String(25), nullable=False)
+    EM1517 = Column(String(25), nullable=False)
+    EM1518 = Column(String(25), nullable=False)
+    EM1519 = Column(String(25), nullable=False)
+    EM1520 = Column(String(25), nullable=False)
+    EM1521 = Column(String(25), nullable=False)
+    EM1522 = Column(String(25), nullable=False)
+    EM1523 = Column(String(25), nullable=False)
+    EM1524 = Column(String(25), nullable=False)
 
 
 if __name__ == '__main__':
