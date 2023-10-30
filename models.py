@@ -24,11 +24,11 @@ class BaseTableForEM():
     id = Column(Integer, nullable=False, primary_key=True)
     timestamp = Column(TIMESTAMP, nullable=False,
                         default=datetime.datetime.utcnow())
-    I1 = Column(Float(5, 2), nullable=False)
-    I2 = Column(Float(5, 2), nullable=False)
-    I3 = Column(Float(5, 2), nullable=False)
-    EffectivePower = Column(Float(5, 2), nullable=False)
-    ReactivePower = Column(Float(5, 2), nullable=False)
+    I1 = Column(String(5, 2), nullable=False)
+    I2 = Column(String(5, 2), nullable=False)
+    I3 = Column(String(5, 2), nullable=False)
+    EffectivePower = Column(String(5, 2), nullable=False)
+    ReactivePower = Column(String(5, 2), nullable=False)
 
 
 class EnergyConsumption(BaseTable, Base):
@@ -107,8 +107,8 @@ class EM12(BaseTableForEM, Base):
 
 class EM14(BaseTable, Base):
     __tablename__ = 'EM14'
-    flow_rate = Column(Float(5, 2), nullable=False)
-    flow = Column(Float(5, 2), nullable=False)
+    flow_rate = Column(String(5, 2), nullable=False)
+    flow = Column(String(5, 2), nullable=False)
 
 class EM15(BaseTable, Base):
     __tablename__ = 'EM15'
