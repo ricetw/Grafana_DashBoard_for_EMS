@@ -9,7 +9,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from models import (
-    EnergyConsumption, EM1, EM2, EM3, EM4, EM5, EM6, EM7, EM8, EM9, EM10, EM11, EM12, EM14, EM15
+    EnergyConsumption, EM1, EM2, EM3, EM4, EM5, EM6, EM7, EM8, EM9, EM10, EM11, EM12, EM14, EM15, Kwh
 )
 
 tz_delta = datetime.timedelta(hours=0)
@@ -38,7 +38,7 @@ electric_current = {
     "PFAV": 100,
     "kVarH": 0
 }
-em1, em2, em3, em4, em5, em6, em7, em8, em9, em10, em11, em12, em14, em15 = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+em1, em2, em3, em4, em5, em6, em7, em8, em9, em10, em11, em12, em14, em15, kwh = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 
 def timenow():
     return datetime.datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
@@ -86,8 +86,33 @@ def add_EM(tablename, data):
                 I2=data["I2"],
                 I3=data["I3"],
                 EffectivePower=data["EffectivePower"],
-                ReactivePower=data["ReactivePower"]
+                ReactivePower=data["ReactivePower"],
+                timestamp=timenow()
             ))
+        if tablename == "EM1":
+            em1.clear()
+        elif tablename == "EM2":
+            em2.clear()
+        elif tablename == "EM3":
+            em3.clear()
+        elif tablename == "EM4":
+            em4.clear()
+        elif tablename == "EM5":
+            em5.clear()
+        elif tablename == "EM6":
+            em6.clear()
+        elif tablename == "EM7":
+            em7.clear()
+        elif tablename == "EM8":
+            em8.clear()
+        elif tablename == "EM9":
+            em9.clear()
+        elif tablename == "EM10":
+            em10.clear()
+        elif tablename == "EM11":
+            em11.clear()
+        elif tablename == "EM12":
+            em12.clear()
     except Exception as e:
         print('Error: ', e)
 
@@ -98,8 +123,10 @@ def add_EM14(data):
         with Session.begin() as session:
             session.add(EM14(
                 flow_rate=data["flow_rate"],
-                flow= data["flow"]
+                flow= data["flow"],
+                timestamp=timenow()
             ))
+        em14.clear()
     except Exception as e:
         print('Error: ', e)
 
@@ -126,10 +153,35 @@ def add_EM15(data):
                 EM1521=data["EM1521"],
                 EM1522=data["EM1522"],
                 EM1523=data["EM1523"],
-                EM1524=data["EM1524"]
+                EM1524=data["EM1524"],
+                timestamp=timenow()
             ))
+        em15.clear()
     except Exception as e:
         print('Error: ', e)
+
+def add_Kwh(data):
+    print(f"KWH - {data}")
+    try:
+        with Session.begin() as session:
+            session.add(Kwh(
+                em1=data['em1'],
+                em2=data['em2'],
+                em3=data['em3'],
+                em4=data['em4'],
+                em5=data['em5'],
+                em6=data['em6'],
+                em7=data['em7'],
+                em8=data['em8'],
+                em9=data['em9'],
+                em10=data['em10'],
+                em11=data['em11'],
+                em12=data['em12'],
+                timestamp=timenow()
+            ))
+        Kwh.clear()
+    except Exception as e:
+        print("Error: ", e)
 
 
 def str_to_float(data):
@@ -195,72 +247,84 @@ def on_message(client, userdata, msg):
         em1['I3'] = str_to_float(data['EM120'])
         em1['EffectivePower'] = str_to_float(data['EM130'])
         em1['ReactivePower'] = str_to_float(data['EM140'])
+        kwh['em1'] = str_to_float(data['EM130'])
     elif msg.topic == "devices/ZG/EM2":
         em2['I1'] = str_to_float(data['EM200'])
         em2['I2'] = str_to_float(data['EM210'])
         em2['I3'] = str_to_float(data['EM220'])
-        em2['EffectivePower'] = data['EM230']
-        em2['ReactivePower'] = data['EM240']
+        em2['EffectivePower'] = str_to_float(data['EM230'])
+        em2['ReactivePower'] = str_to_float(data['EM240'])
+        kwh['em2'] = str_to_float(data['EM230'])
     elif msg.topic == "devices/ZG/EM3":
         em3['I1'] = str_to_float(data['EM300'])
         em3['I2'] = str_to_float(data['EM310'])
         em3['I3'] = str_to_float(data['EM320'])
         em3['EffectivePower'] = str_to_float(data['EM330'])
         em3['ReactivePower'] = str_to_float(data['EM340'])
+        kwh['em3'] = str_to_float(data['EM330'])
     elif msg.topic == "devices/ZG/EM4":
         em4['I1'] = str_to_float(data['EM400'])
         em4['I2'] = str_to_float(data['EM410'])
         em4['I3'] = str_to_float(data['EM420'])
         em4['EffectivePower'] = str_to_float(data['EM430'])
         em4['ReactivePower'] = str_to_float(data['EM440'])
+        kwh['em4'] = str_to_float(data['EM430'])
     elif msg.topic == "devices/ZG/EM5":
         em5['I1'] = str_to_float(data['EM500'])
         em5['I2'] = str_to_float(data['EM510'])
         em5['I3'] = str_to_float(data['EM520'])
         em5['EffectivePower'] = str_to_float(data['EM530'])
         em5['ReactivePower'] = str_to_float(data['EM540'])
+        kwh['em5'] = str_to_float(data['EM530'])
     elif msg.topic == "devices/ZG/EM6":
         em6['I1'] = str_to_float(data['EM600'])
         em6['I2'] = str_to_float(data['EM610'])
         em6['I3'] = str_to_float(data['EM620'])
         em6['EffectivePower'] = str_to_float(data['EM630'])
         em6['ReactivePower'] = str_to_float(data['EM640'])
+        kwh['em6'] = str_to_float(data['EM630'])
     elif msg.topic == "devices/ZG/EM7":
         em7['I1'] = str_to_float(data['EM700'])
         em7['I2'] = str_to_float(data['EM710'])
         em7['I3'] = str_to_float(data['EM720'])
         em7['EffectivePower'] = str_to_float(data['EM730'])
         em7['ReactivePower'] = str_to_float(data['EM740'])
+        kwh['em7'] = str_to_float(data['EM730'])
     elif msg.topic == "devices/ZG/EM8":
         em8['I1'] = str_to_float(data['EM800'])
         em8['I2'] = str_to_float(data['EM810'])
         em8['I3'] = str_to_float(data['EM820'])
         em8['EffectivePower'] = str_to_float(data['EM830'])
         em8['ReactivePower'] = str_to_float(data['EM840'])
+        kwh['em8'] = str_to_float(data['EM830'])
     elif msg.topic == "devices/ZG/EM9":
         em9['I1'] = str_to_float(data['EM900'])
         em9['I2'] = str_to_float(data['EM910'])
         em9['I3'] = str_to_float(data['EM920'])
         em9['EffectivePower'] = str_to_float(data['EM930'])
         em9['ReactivePower'] = str_to_float(data['EM940'])
+        kwh['em9'] = str_to_float(data['EM930'])
     elif msg.topic == "devices/ZG/EM10":
         em10['I1'] = str_to_float(data['EM1000'])
         em10['I2'] = str_to_float(data['EM1010'])
         em10['I3'] = str_to_float(data['EM1020'])
         em10['EffectivePower'] = str_to_float(data['EM1030'])
         em10['ReactivePower'] = str_to_float(data['EM1040'])
+        kwh['em10'] = str_to_float(data['EM1030'])
     elif msg.topic == "devices/ZG/EM11":
         em11['I1'] = str_to_float(data['EM1100'])
         em11['I2'] = str_to_float(data['EM1110'])
         em11['I3'] = str_to_float(data['EM1120'])
         em11['EffectivePower'] = str_to_float(data['EM1130'])
         em11['ReactivePower'] = str_to_float(data['EM1140'])
+        kwh['em11'] = str_to_float(data['EM1130'])
     elif msg.topic == "devices/ZG/EM12":
         em12['I1'] = str_to_float(data['EM1200'])
         em12['I2'] = str_to_float(data['EM1210'])
         em12['I3'] = str_to_float(data['EM1220'])
         em12['EffectivePower'] = str_to_float(data['EM1230'])
         em12['ReactivePower'] = str_to_float(data['EM1240'])
+        kwh['em12'] = str_to_float(data['EM1230'])
     elif msg.topic == "devices/ZG/EM14":
         if data['EM1400'] == "00000":
             em14['flow_rate'] = float("0" + "." + str(int(data['EM1410'])))
@@ -306,5 +370,6 @@ if __name__ == "__main__":
     task.add_job(add_EM, 'interval', seconds=10, args=[EM12, em12])
     task.add_job(add_EM14, 'interval', seconds=10, args=[em14])
     task.add_job(add_EM15, 'interval', seconds=10, args=[em15])
+    task.add_job(add_Kwh, 'interval', seconds=10, args=[kwh])
     task.start()
     client.loop_forever()

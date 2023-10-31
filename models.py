@@ -132,6 +132,22 @@ class EM15(BaseTable, Base):
     EM1524 = Column(Float(5, 2), nullable=False)
 
 
+class Kwh(BaseTable, Base):
+    __tablename__ = "Kwh"
+    em1 = Column(Float(5, 2), nullable=False)
+    em2 = Column(Float(5, 2), nullable=False)
+    em3 = Column(Float(5, 2), nullable=False)
+    em4 = Column(Float(5, 2), nullable=False)
+    em5 = Column(Float(5, 2), nullable=False)
+    em6 = Column(Float(5, 2), nullable=False)
+    em7 = Column(Float(5, 2), nullable=False)
+    em8 = Column(Float(5, 2), nullable=False)
+    em9 = Column(Float(5, 2), nullable=False)
+    em10 = Column(Float(5, 2), nullable=False)
+    em11 = Column(Float(5, 2), nullable=False)
+    em12 = Column(Float(5, 2), nullable=False)
+
+
 if __name__ == '__main__':
     current_directory = os.path.dirname(os.path.abspath(__file__))
     dotenv_path = os.path.join(current_directory, "..", ".env")
